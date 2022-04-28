@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://libs.zappar.com/zappar-aframe/0.3.29/zappar-aframe.js"></script>
+
+    <meta charset="utf-8" />
+    <title>Маски-масочки</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #right_button {
+        position: absolute;
+        bottom: 90px;
+        width: 100px;
+        left: calc(100% - 145px);
+
+        background-color: #83C2F5;
+        color: rgb(249, 4, 4);
+        text-align: center;
+        font-family: sans-serif;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      #left_button {
+        position: absolute;
+        bottom: 90px;
+        width: 100px;
+        right: calc(100% - 145px);
+
+        background-color: #128ff3;
+        color: rgb(249, 4, 4);
+        text-align: center;
+        font-family: sans-serif;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+       </style>
+  </head>
+
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-asset-item
+          id="mask1"
+          src="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/cat.glb?v=1641478188060"
+        >
+        </a-asset-item>
+
+        <a-mixin
+          id="pos1"
+          gltf-model="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/cat.glb?v=1641478188060"
+          position="0 0.4 1.01"
+          scale="0.3 0.3 0.3"
+          rotation="0 0 0"
+        >
+        </a-mixin>
+        <a-asset-item
+          id="mask2"
+          src="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/crown%20(2).glb?v=1641459575400"
+        >
+        </a-asset-item>
+        <a-mixin
+          id="pos2"
+          gltf-model="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/crown%20(2).glb?v=1641459575400"
+          position="0 0.8 -0.001"
+          scale="0.7 0.7 0.7"
+          rotation="0 270 0"
+        >
+        </a-mixin>
+        <a-asset-item
+          id="mask3"
+          src="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/bear.glb?v=1641476763170"
+        >
+        </a-asset-item>
+        <a-mixin
+          id="pos3"
+          gltf-model="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/bear.glb?v=1641476763170"
+          position="0 0.4 1.01"
+          scale="0.3 0.3 0.3"
+          rotation="0 0 0"
+        >
+        </a-mixin>
+        <a-asset-item
+          id="mask4"
+          src="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/fox.glb?v=1641478167922"
+        >
+        </a-asset-item>
+        <a-mixin
+          id="pos4"
+          gltf-model="https://cdn.glitch.global/3a05f7cc-6386-427d-9c60-ae6c4d233661/fox.glb?v=1641478167922"
+          position="0 0.4 1.01"
+          scale="0.3 0.3 0.3"
+          rotation="0 0 0"
+        >
+        </a-mixin>
+      </a-assets>
+     
+      <a-entity zappar-permissions-ui id="permissions"></a-entity>
+     
+      <a-entity zappar-compatibility-ui id="compatibility"></a-entity>
+
+      <a-camera zappar-camera="user-facing: false;" />
+
+     
+      <a-entity zappar-face id="my-face-tracker">
+      
+        <a-entity zappar-head-mask="face:#my-face-tracker;"></a-entity>
+
+        <!-- Include a 3D model inside our face tracker -->
+        <a-entity id="currentMask" gltf-model="#mask1" mixin="pos1"></a-entity>
+      </a-entity>
+      <a-entity> </a-entity>
+    </a-scene>
+    <!-- Some UI for the user to tap to indicate they're happy with the placement -->
+
+    <div id="left_button">Назад</div>
+    <div id="right_button">Вперед</div>
+    <script>
+      let k = 1;
+      function MaskChange() {
+        const instant_mask = document.getElementById("currentMask");
+        var maskname = `#mask${k}`;
+        var maskpos = `pos${k}`;
+        instant_mask.setAttribute("gltf-model", maskname);
+        instant_mask.setAttribute("mixin", maskpos);
+      }
+
+      const PredUI = document.getElementById("left_button");
+      PredUI.addEventListener("click", function () {
+        if (k == 1) {
+          k = 4;
+        } else {
+          k--;
+        }
+        MaskChange();
+      });
+      const NextUI = document.getElementById("right_button");
+      NextUI.addEventListener("click", function () {
+        if (k == 4) {
+          k = 1;
+        } else {
+          k++;
+        }
+        MaskChange();
+      });
+    </script>
+  </body>
+</html>
